@@ -123,7 +123,8 @@ public class Encoder {
 		String[] instructions = inStr.split("\n");
 		List<Byte> file = new ArrayList<Byte>();
 		int defaultDelay = 0;
-
+		int delaySave = 0;
+		
 		for (int i = 0; i < instructions.length; i++) {
 			try {
 				boolean delayOverride = false;
@@ -143,6 +144,8 @@ public class Encoder {
 						|| instruction[0].equals("DEFAULTDELAY")) {
 					defaultDelay = (byte) Integer.parseInt(instruction[1]
 							.trim());
+					delaySave = defaultDelay;
+					delayOverride = false;
 				} else if (instruction[0].equals("DELAY")) {
 					int delay = Integer.parseInt(instruction[1].trim());
 					while (delay > 0) {
@@ -390,6 +393,7 @@ public class Encoder {
 							defaultDelay = 0;
 						}
 					}
+					defaultDelay = delaySave;
 				}
 			} catch (Exception e) {
 				System.out.println("Error on Line: " + (i + 1));
